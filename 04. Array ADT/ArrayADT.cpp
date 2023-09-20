@@ -132,6 +132,19 @@ class Array{
                 swap(&A[i], &A[length-i-1]);
             }
         }
+        void insertionSort(){
+            for(int i=1; i<length; i++){
+                int key = A[i];
+
+                int j = i-1;
+                while(key<A[j] && j>=0){
+                    A[j+1] = A[j];
+                    j--;
+                }
+                A[j+1] = key;
+            }
+        }
+
         int isSorted(){
             for(int i=0; i<length-1; i++){
                 if(A[i]>A[i+1]){
@@ -140,26 +153,127 @@ class Array{
             }
             return 1;
         }
-        void
+
+        Array* merge(Array arr2);
+        Array* Union(Array arr2);
+        Array* Intersection(Array arr2);
+        Array* Difference(Array arr2);
 
 };
 
+Array* Array::merge(Array arr2){
+    int i=0, j=0, k=0;
+    Array *mergedArray = new Array(length+arr2.length); 
 
+    while (i<length && j<arr2.length)
+    {
+        if(A[i]<arr2.A[j]){
+            mergedArray->A[k++]=arr2.A[i++];
+        }
+        else{
+            mergedArray->A[k++]=arr2.A[j++];
+        }
+    }
+
+    for(; i<length; i++){
+        mergedArray->A[k++] = A[i];
+    }
+    for(; j<length; j++){
+        mergedArray->A[k++] = A[j];
+    }
+
+    return mergedArray;
+    
+}
+Array* Array::Union(Array arr2){
+    int i=0, j=0, k=0;
+    Array *mergedArray = new Array(length+arr2.length); 
+
+    while (i<length && j<arr2.length)
+    {
+        if(A[i]<arr2.A[j]){
+            mergedArray->A[k++]=arr2.A[i++];
+        }
+        else{
+            mergedArray->A[k++]=arr2.A[j++];
+        }
+    }
+
+    for(; i<length; i++){
+        mergedArray->A[k++] = A[i];
+    }
+    for(; j<length; j++){
+        mergedArray->A[k++] = A[j];
+    }
+
+    return mergedArray;
+    
+}
+
+Array* Array::Intersection(Array arr2){
+    int i=0, j=0, k=0;
+    Array *intersectionArray = new Array(length+arr2.length); 
+
+    while (i<length && j<arr2.length)
+    {
+        if(A[i]<arr2.A[j]){
+            i++;
+        }
+        else if(A[i]>arr2.A[j]){
+            j++;
+        }
+        else{
+            intersectionArray[k++]=A[i];
+        }
+        
+    }
+
+    intersectionArray->length = k;
+    return intersectionArray;
+}
+
+Array* Array::Difference(Array arr2){
+    int i=0, j=0, k=0;
+
+    Array *diffArray =  new Array(length+arr2.length); 
+
+    while(i<length && j<arr2.length){
+        if(A[i]<A[j]){
+            diffArray->A[k++]=A[i++];
+        }
+        else if(A[j]<A[i]){
+            j++;
+        }
+        else{
+            i++;
+            j++;
+        }
+
+    }
+    for(; i<length;i++){
+        diffArray[k++] = A[i];
+    }
+
+    diffArray->length=k;
+    return diffArray;
+}
 int main(){
     Array arr = Array(10);
-    arr.append(5);
-    arr.append(6);
-    arr.append(7);
     arr.append(13);
+    arr.append(6);
+    arr.append(5);
     arr.append(14);
+    arr.append(7);
     arr.append(156);
     arr.display();
-    cout<<arr.linearSearch(7)<<endl;
-    cout<<arr.binarySearch(6)<<endl;
-    cout<<arr.min()<<endl;
-    cout<<arr.max()<<endl;
-    cout<<arr.sum()<<endl;
-    cout<<arr.average()<<endl;
-    cout<<arr.isSorted()<<endl;
+    arr.insertionSort();
+    arr.display();
+    // cout<<arr.linearSearch(7)<<endl;
+    // cout<<arr.binarySearch(6)<<endl;
+    // cout<<arr.min()<<endl;
+    // cout<<arr.max()<<endl;
+    // cout<<arr.sum()<<endl;
+    // cout<<arr.average()<<endl;
+    // cout<<arr.isSorted()<<endl;
     return 0;
 }
